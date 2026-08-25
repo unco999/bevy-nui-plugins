@@ -1,0 +1,13 @@
+input health f32:0..100 default 82
+input mana f32:0..100 default 64
+surface ordinary-ui x 0 y 0 w 1280 h 720
+  panel status-root x 32 y 32 w 320 h 140 column pad 8 gap 6 fill #244A62 line #8ED6F0 event character.open_status
+    panel status-header row w 304 h 28 gap 8 fill #183445
+      text avatar value "A"
+      text name value "Astra"
+      text level value "Lv 12"
+    panel bars row w 304 h 48 gap 8 fill #183445
+      progress_bar health_bar numeric $health
+      progress_bar mana_bar numeric $mana
+    text status-effect value "Screen UI baseline"
+    button status-action h 24 value "Toggle status" event character.status.toggle

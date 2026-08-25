@@ -1,0 +1,29 @@
+[package]
+name = "bevy-nui-plugins"
+version = "0.1.0"
+edition = "2024"
+description = "Bevy plugins for Neon3 declarative screen/world UI, camera synchronization, input, and external surfaces"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/unco999/bevy-nui-plugins"
+keywords = ["bevy", "ui", "wgpu", "neon3", "declarative"]
+categories = ["game-development", "gui", "rendering"]
+
+[dependencies]
+bevy = { version = "0.19.1", default-features = false, features = ["3d", "ui", "jpeg"] }
+bevy_render = "0.19.1"
+bevy_panorbit_camera = "0.35"
+wgpu = "29.0.4"
+wgpu-hal = "29.0.4"
+neon-ui = "0.2.0"
+neon-ipc = "0.2.0"
+neon-protocol = "0.2.0"
+neon-world-bridge = "0.2.0"
+neon-wgpu-runtime = "0.2.0"
+neon-eventd = "0.2.0"
+serde_json = "1.0"
+windows = { version = "0.62.2", features = ["Win32_Foundation", "Win32_Graphics_Direct3D12"] }
+
+[dev-dependencies]
+bytemuck = "1"
+pollster = "0.4"
