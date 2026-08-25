@@ -9,6 +9,8 @@ repository = "https://github.com/unco999/bevy-nui-plugins"
 keywords = ["bevy", "ui", "wgpu", "neon3", "declarative"]
 categories = ["game-development", "gui", "rendering"]
 
+[workspace]
+
 [dependencies]
 bevy = { version = "0.19.1", default-features = false, features = ["3d", "ui", "jpeg"] }
 bevy_render = "0.19.1"
