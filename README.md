@@ -33,3 +33,8 @@ and combined screen/world UI case.
 
 World billboard panels keep their authored screen size while retaining their
 real camera distance for depth-tested scene occlusion.
+
+## Showcase
+
+![Neon3 + Bevy screen/world UI demo](assets/demo-1.gif)
+![Neon3 + Bevy physics playground UI demo](assets/demo-2.gif)
