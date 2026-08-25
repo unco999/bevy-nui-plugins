@@ -30,3 +30,6 @@ bevy-nui-plugins = "0.1"
 
 See the `bevy-nui-host` example repository for a complete physics playground
 and combined screen/world UI case.
+
+World billboard panels keep their authored screen size while retaining their
+real camera distance for depth-tested scene occlusion.

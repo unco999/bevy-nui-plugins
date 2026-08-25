@@ -53,22 +53,6 @@ pub const WORLD_SURFACE_ID: &str = "case.bevy.world.ui";
 pub const WORLD_COLOR_TARGET_ID: &str = "case.bevy.world.ui.color";
 pub const UI_BACKING_SCALE: u32 = 2;
 
-/// Reference distance (meters) for world-UI panel scaling.
-///
-/// The WGPU runtime hardcodes `world_scale = (6.0 / view_distance).clamp(0.5, 2.0)`
-/// and applies it to the panel's pixel size and text glyph scale.  By fixing the
-/// `view_distance` sent in the anchor to this constant, the runtime always produces
-/// `world_scale = 1.0`, keeping world-UI panels at their authored pixel size
-/// regardless of camera zoom.
-///
-/// **Trade-off**: occlusion depth (`near / view_distance`) is also computed from
-/// this value, so depth-tested panels use a fixed depth of ~6 m instead of the
-/// actual object distance.  For open-scene overlays (physics playground tags,
-/// floating labels) the depth error is acceptable; for panels that must be
-/// precisely occluded at variable distances, the host should send the real
-/// `view_distance` and accept the scale variation.
-pub const WORLD_UI_REFERENCE_DISTANCE: f32 = 6.0;
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum Neon3ServiceMode {
     /// The host starts and owns the local Neon services.
@@ -3135,13 +3119,6 @@ fn publish_world_anchor(
             // Behind the camera or outside [near, far]: hidden.
             (-1.0, -1.0)
         };
-        // The runtime derives `world_scale = (6.0 / view_distance).clamp(0.5, 2.0)`
-        // from this field.  Use a fixed reference distance so the panel is always
-        // rendered at its authored pixel size (world_scale = 1.0), regardless of
-        // camera distance.  The occlusion depth (near / view_distance) will be
-        // approximately correct for objects at ~6 m; depth testing accuracy is
-        // traded for stable panel and text sizing across camera zoom.
-        let view_distance = WORLD_UI_REFERENCE_DISTANCE;
         placements.push(WorldUiAnchorSample {
             anchor_id: neon_world_bridge::WorldAnchorId(world_ui.anchor.clone()),
             position: [
@@ -3153,7 +3130,10 @@ fn publish_world_anchor(
             occlusion: world_ui.occlusion.as_str().into(),
             screen_x,
             screen_y,
-            view_distance,
+            // Keep the real camera-space distance here. The runtime uses it
+            // for scene occlusion; billboard visual size is kept fixed by the
+            // renderer independently.
+            view_distance: actual_view_distance,
         });
     }
     placements.sort_by(|left, right| left.anchor_id.cmp(&right.anchor_id));
